@@ -17,6 +17,9 @@ RUN apt update -y && DEBIAN_FRONTEND=noninteractive apt -y --no-install-recommen
     curl https://raw.githubusercontent.com/McStasMcXtrace/McCode/master/Docker/mcstas/mcstasscript/mcstasscript-setup.py >\
     /tmp/mcstasscript-setup.py && \
     python3 /tmp/mcstasscript-setup.py && \
+    python3 -m pip install jupyter && \
+    # The following works around https://github.com/sphinx-doc/sphinx/issues/8198
+    python3 -m pip install pygments==2.6.1 && \
     update-alternatives --install /bin/sh sh /bin/bash 200 && \
     update-alternatives --install /bin/sh sh /bin/dash 100 && \
     rm -rf /var/lib/apt/lists/*
@@ -26,9 +29,5 @@ RUN groupadd docker && useradd -g docker docker && \
     /home/mcstasscript/McStasScript_demo.ipynb && \
     chown -R docker:docker /home/mcstasscript
 
-USER docker
 ENV HOME /home/docker
 WORKDIR /home/docker
-    
-    
-
